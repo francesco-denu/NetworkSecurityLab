@@ -21,3 +21,12 @@ The network topology includes **4 VLANs** with distinct roles:
   - Voting app, built with Django and using PostgreSQL for its database
 
 
+## Usage
+
+To run this environment, you need a Linux AMD64 system.  
+Start the lab by running:
+
+```bash
+sudo ./run.sh
+```
+*Note*: Sudo is required due to the network configuration steps involved. Feel free to review the run.sh script yourself for security reasons!
