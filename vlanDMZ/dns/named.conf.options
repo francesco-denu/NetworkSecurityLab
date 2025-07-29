@@ -1,0 +1,16 @@
+// define global dns options
+
+options {
+    directory "/var/cache/bind"; // directory where cache and zone files are saved
+
+    allow-query { any; };
+
+    //recursion yes; // in our case we dont do recursion
+    //forwarders {
+        //8.8.8.8;
+        //8.8.4.4;
+    //};
+
+    listen-on { any; };
+    listen-on-v6 { any; };
+};

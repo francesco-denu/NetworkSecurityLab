@@ -1,0 +1,20 @@
+Instruction to build image for vyos: https://docs.vyos.io/en/latest/installation/virtual/docker.html
+but image comes from https://github.com/vyos/vyos-nightly-build/releases/download/2025.06.24-0020-rolling/vyos-2025.06.24-0020-rolling-generic-amd64.iso
+(https://github.com/vyos/vyos-nightly-build/releases/)
+
+mkdir vyos
+cd vyos && curl -o vyos.iso URL_IMAGE
+cd ..
+mkdir rootfs
+sudo apt-get install -y squashfs-tools 
+mkdir unsquashfs
+
+sudo mount -o loop vyos.iso rootfs # Mounts the ISO so we can extract the root filesystem 
+sudo unsquashfs -f -d unsquashfs/ rootfs/live/filesystem.squashfs # Extracting the root filesystem
+
+sudo tar -C unsquashfs -c . | docker import - vyos # Building docker image from root filesystem
+sudo umount rootfs
+cd ..
+sudo rm -rf vyos
+docker run -d --rm --name vyos --privileged -v /lib/modules:/lib/modules \vyos /sbin/init
+docker exec -ti vyos su - vyos

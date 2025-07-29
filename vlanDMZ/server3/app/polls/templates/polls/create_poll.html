@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Poll</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .poll-container {
+      background: white;
+      padding: 2.5rem 3rem;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 420px;
+    }
+    .poll-container h1 {
+      margin-bottom: 1.5rem;
+      color: #222;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #444;
+    }
+    input[type="text"] {
+      padding: 10px 12px;
+      margin-bottom: 1.2rem;
+      border: 1.5px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus {
+      border-color: #28a745;
+      outline: none;
+    }
+    button[type="submit"] {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background: #1e7e34;
+    }
+    .error-list {
+      color: red;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="poll-container">
+    <h1>Create a Poll</h1>
+
+    {% if form.errors or formset.errors %}
+      <div class="error-list">
+        <strong>Please correct the following errors:</strong>
+        <ul>
+          {% for field, errors in form.errors.items %}
+            <li><strong>{{ field }}:</strong> {{ errors|join:", " }}</li>
+          {% endfor %}
+          {% for form in formset %}
+            {% for field in form %}
+              {% for error in field.errors %}
+                <li><strong>{{ field.name }}:</strong> {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <!-- Poll question -->
+      <label for="{{ form.question.id_for_label }}">Question</label>
+      {{ form.question }}
+
+      {{ formset.management_form }}
+
+      <!-- Poll choices -->
+      {% for choice_form in formset %}
+        <label for="{{ choice_form.choice_text.id_for_label }}">Choice {{ forloop.counter }}</label>
+        {{ choice_form.choice_text }}
+      {% endfor %}
+
+      <button type="submit">Create Poll</button>
+    </form>
+  </div>
+</body>
+</html>

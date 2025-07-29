@@ -1,0 +1,5 @@
+// Defines the domains to manage
+zone "utils.com" { // the zone is the domain
+    type master; // authoratative source for the zone 
+    file "/etc/bind/zones/db.utils.com"; // the file that contains the data
+};

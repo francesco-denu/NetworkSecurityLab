@@ -1,0 +1,86 @@
+services:
+  switch1:
+    build:
+      context: ./switch1
+    container_name: switch1
+    privileged: true
+    network_mode: none
+    
+  router1:
+    build:
+      context: ./router1 
+    container_name: router1
+    privileged: true
+    network_mode: none
+    command: /sbin/init
+    volumes:
+      - /lib/modules:/lib/modules
+
+  host1:
+    build:
+      context: ./vlanA/host1
+    container_name: host1
+    privileged: true
+    network_mode: none
+
+  server1:
+    build:
+      context: ./vlanServer/server1
+    container_name: server1
+    privileged: true
+    network_mode: none
+
+  server2:
+    build:
+      context: ./vlanServer/server2
+    container_name: server2
+    privileged: true
+    network_mode: none
+  
+  gateway:
+    build:
+      context: ./vlanDMZ/gateway
+    container_name: gateway
+    privileged: true
+    network_mode: none
+
+  db:
+    build:
+      context: ./vlanDMZ/db
+    container_name: db
+    privileged: true
+    network_mode: none
+
+  server3:
+    build:
+      context: ./vlanDMZ/server3
+    container_name: server3
+    privileged: true
+    network_mode: none
+    depends_on: 
+      - db
+
+  server4:
+    build:
+      context: ./vlanDMZ/server3
+    container_name: server4
+    privileged: true
+    network_mode: none
+    depends_on: 
+      - db
+
+
+  dns:
+    build:
+      context: ./vlanDMZ/dns
+    container_name: dns
+    privileged: true
+    network_mode: none
+
+  switch2:
+    build:
+      context: ./switch2
+    container_name: switch2
+    privileged: true
+    network_mode: none
+

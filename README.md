@@ -24,6 +24,13 @@ The network topology includes **4 VLANs** with distinct roles:
 ## Usage
 
 To run this environment, you need a Linux AMD64 system.  
+
+Before running the laboratory, it is necessary to create the VyOS Docker image by running the following commands inside the `router1/vyos/` directory:
+
+```bash
+sudo mount -o loop vyos.iso rootfs             # Mounts the ISO so we can extract the root filesystem
+sudo unsquashfs -f -d unsquashfs/ rootfs/live/filesystem.squashfs  # Extracts the root filesystem
+```
 Start the lab by running:
 
 ```bash
